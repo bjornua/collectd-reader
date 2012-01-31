@@ -1,0 +1,39 @@
+<html>
+    <head>
+        <title>flot test</title>
+        <script language="javascript" type="text/javascript" src="/static/js/flot/jquery.js"></script>
+        <script language="javascript" type="text/javascript" src="/static/js/flot/jquery.flot.js"></script>
+        <script language="javascript" type="text/javascript" src="/static/js/flot/jquery.flot.selection.js"></script>
+    </head>
+    <body>
+        <h1>Hej med dig</h1>
+        <div id="placeholder" style="width:800px;height:400px;"></div>
+    </body>
+        <script language="javascript" type="text/javascript">
+            $(function(){
+                $.getJSON("/static/data.js", function(data){
+                    var options = {
+                        colors: ["#595"],
+                        series: {
+                            lines: { show: true },
+                            points: { show: false }
+                        },
+                        legend: { noColumns: 2 },
+                        xaxis: {mode: "time", ticks:5},
+                        selection: { mode: "x", color:"#00A" }
+                    }
+                    var plot = $.plot(placeholder, [data], options);
+                    placeholder = $("#placeholder");
+                    placeholder.bind("plotselected", function (event, ranges) {
+                        plot = $.plot(placeholder, [data],
+                            $.extend(true, {}, options, {
+                                xaxis: { min: ranges.xaxis.from, max: ranges.xaxis.to }
+                            })
+                        );
+                    });
+                });
+            });
+                                
+
+        </script>
+</html>
