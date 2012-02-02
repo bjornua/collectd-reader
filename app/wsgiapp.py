@@ -9,7 +9,6 @@ from werkzeug.exceptions import NotFound
 
 from app.mapping import url_map, endpts
 from app.utils.misc import local, path
-from app.utils.session import Session
 
 import app.config
 config = app.config.get()
@@ -32,7 +31,6 @@ class Main(object):
     def appdispatch(self, environ, start_response):
         local.request = Request(environ)
         local.response = Response()
-        local.session = Session(local.request.cookies.get("session"), 600)
         try:
             local.url_adapter = url_adapter = url_map.bind_to_environ(environ)
             try:
@@ -52,8 +50,6 @@ class Main(object):
                 local.endpt = "error"
                 endpts["error"]()
         response = local.response
-        local.session.save()
-        local.session.set_cookie(local.response)
             
         return response(environ, start_response)
 
