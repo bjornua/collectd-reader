@@ -25,8 +25,6 @@ def prompt_update_config():
     config = app.config.get()
 
     for name, key, converter, repr_ in [
-        ("CouchDB Server URL", "couchdb_server_url", str, str),
-        ("CouchDB db", "couchdb_db", str, str),
     ]:
         config[key] = user_query(name, converter, repr_, config[key])
     return config

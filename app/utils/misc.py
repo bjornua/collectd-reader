@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
+import os
 import os.path
 import xml.sax.saxutils
 
@@ -15,6 +16,10 @@ import pprint
 
 import restkit
 import socketpool
+
+import contextlib
+import threading
+import sqlite3
 
 config = app.config.get()
 
@@ -34,6 +39,18 @@ def db():
         server = couchdbkit.Server(config["couchdb_server_url"], session=pool)
         _db = server.get_or_create_db(config["couchdb_db"])
     return _db
+
+_sqlitedb = None
+def sqlitedb():
+    global _sqlitedb
+    if _sqlitedb is None:
+        _sqlitedb = sqlite3.connect("devdb.sqlite3", check_same_thread=False)
+        _sqlitedb.execute("PRAGMA synchronous=OFF")
+        _sqlitedb.execute("PRAGMA journal_mode=OFF")
+        _sqlitedb.execute("PRAGMA count_changes=OFF")
+        _sqlitedb.isolation_level = None
+        with open("createdatabase.sql") as f: _sqlitedb.executescript(f.read())
+    return _sqlitedb
 
 template_lookup = mako.lookup.TemplateLookup(
     directories=[path["templates"]],
