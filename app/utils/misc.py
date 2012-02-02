@@ -9,16 +9,10 @@ import werkzeug.routing
 import werkzeug.utils
 import mako.lookup
 
-import couchdbkit
 import app.widget
 import app.config
 import pprint
 
-import restkit
-import socketpool
-
-import contextlib
-import threading
 import sqlite3
 
 config = app.config.get()
@@ -30,15 +24,6 @@ path["templates"] = "templates"
 local = werkzeug.Local()
 local_manager = werkzeug.LocalManager([local])
 application = local("application")
-
-_db = None
-def db():
-    global _db
-    if _db is None:
-        pool = socketpool.ConnectionPool(factory=restkit.Connection)
-        server = couchdbkit.Server(config["couchdb_server_url"], session=pool)
-        _db = server.get_or_create_db(config["couchdb_db"])
-    return _db
 
 _sqlitedb = None
 def sqlitedb():
