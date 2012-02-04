@@ -14,6 +14,7 @@
         <tbody>
         </tbody>
     </table>
-    <script language="javascript" type="text/javascript"
-    src="/static/js/graphviewer.js">
+    <script language="javascript" type="text/javascript" src="/static/js/graphviewer.js">
+    </script>
+    <script language="javascript" type="text/javascript" src="/static/js/graphviewer.plugins.js">
     </script>

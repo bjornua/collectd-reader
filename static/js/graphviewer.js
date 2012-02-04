@@ -1,5 +1,21 @@
-function updatedatalist(graph, metadata){
-    $.getJSON("/metadata.json", function(entries){
+(function($){
+
+    $(function(){
+        $.getJSON("/metadata.json", function(entries){
+            entries.forEach(function(entry){
+                event = $.Event("new_metadata");
+                event.metadata = entry;
+                $.trigger(event);
+            });
+        });
+        
+    });
+})(jQuery);
+
+
+
+
+/*function updatedatalist(graph, metadata){
         datalist = $("#datalist>tbody");
         datalist.empty("");
         
@@ -101,4 +117,4 @@ $(function(){
     updategraph(graph, metadata);
     updatedatalist(graph, metadata);
 });
-
+*/

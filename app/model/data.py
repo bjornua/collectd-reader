@@ -28,8 +28,6 @@ def itermetadata():
         }
         yield doc
 
-
-
 def getdata(metadata_ids, *args, **kwargs):
     out = []
     for metadata_id in metadata_ids:
